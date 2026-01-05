@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GFG - Issue Ticket</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #f0f4f8 0%, #d1fae5 100%);
+            display: flex; justify-content: center; align-items: center; min-height: 100vh;
+        }
+        .reg-card {
+            background: white; width: 100%; max-width: 800px; display: flex;
+            border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.1); min-height: 500px;
+        }
+        .form-side { flex: 1; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+        .ticket-side { flex: 1; background: #2d3436; display: flex; justify-content: center; align-items: center; position: relative; }
+        
+        h2 { color: #2f8d46; margin-bottom: 10px; font-weight: 700; }
+        p { color: #636e72; font-size: 14px; margin-bottom: 30px; }
+        
+        .input-group { margin-bottom: 20px; }
+        label { display: block; font-size: 12px; font-weight: 600; color: #b2bec3; text-transform: uppercase; margin-bottom: 5px; }
+        input, select { width: 100%; padding: 12px; border: 2px solid #dfe6e9; border-radius: 8px; font-family: 'Poppins', sans-serif; transition: all 0.3s; }
+        input:focus, select:focus { border-color: #2f8d46; outline: none; }
+
+        .digital-pass {
+            background: white; width: 280px; padding: 30px 20px; border-radius: 16px;
+            text-align: center; display: none; border-top: 6px solid #00b894; animation: popIn 0.5s ease;
+        }
+        @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        
+        .pass-header { font-weight: 800; color: #b2bec3; letter-spacing: 2px; font-size: 12px; margin-bottom: 15px; }
+        .pass-name { font-size: 20px; font-weight: 700; color: #2d3436; margin-bottom: 5px; }
+        .pass-role { background: #dfe6e9; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+        .qr-box { display: flex; justify-content: center; margin: 20px 0; }
+        .placeholder-text { color: rgba(255,255,255,0.3); font-weight: 600; text-align: center; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .reg-card { flex-direction: column; max-width: 90%; height: auto; }
+            .ticket-side { padding: 40px; min-height: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="reg-card">
+        
+        <div class="form-side" id="input-section">
+            <h2>New Registration</h2>
+            <p>Enter details to add student to database & generate ticket.</p>
+            
+            <form id="regForm">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="in_name" placeholder="e.g. Rahul Sharma" required>
+                </div>
+                
+                <div class="input-group">
+                    <label>Student ID (No Spaces)</label>
+                    <input type="text" id="in_id" placeholder="e.g. 21bcs1099" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Role</label>
+                    <select id="in_role">
+                        <option value="participant">Participant (Coder)</option>
+                        <option value="audience">Audience (Guest)</option>
+                    </select>
+                </div>
+
+                <button type="submit" style="width: 100%; padding: 12px; background:#0984e3; color:white; border-radius:8px; border:none; cursor:pointer; font-weight:bold;">Generate Ticket</button>
+            </form>
+            
+            <div style="margin-top: 20px; text-align: center;">
+                <a href="index.html" style="text-decoration: none; color: #636e72; font-size: 13px;">&larr; Back to Dashboard</a>
+            </div>
+        </div>
+
+        <div class="ticket-side">
+            <div id="ticket-placeholder" class="placeholder-text">TICKET PREVIEW<br>WILL APPEAR HERE</div>
+
+            <div id="ticket-final" class="digital-pass">
+                <div class="pass-header">GFG EVENT PASS</div>
+                <div class="pass-name" id="out_name">User Name</div>
+                <span class="pass-role" id="out_role">ROLE</span>
+                
+                <div id="qrcode" class="qr-box"></div>
+                
+                <div style="font-size: 11px; color: #b2bec3;">ID: <span id="out_id">---</span></div>
+                <button onclick="location.reload()" style="margin-top: 15px; padding: 5px 10px; border: 1px solid #dfe6e9; background: white; border-radius: 4px; cursor: pointer; font-size: 10px;">Register Another</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.getElementById('regForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('in_name').value.trim();
+            const id = document.getElementById('in_id').value.trim();
+            const role = document.getElementById('in_role').value;
+
+            if (id.length < 5) {
+                alert("⚠️ Error: ID is too short! It should be a proper college ID.");
+                return;
+            }
+            
+            const valid_format = /^\d{2}[a-zA-Z]+\d{3,5}$/;
+
+            if (!valid_format.test(id)) {
+                alert("⚠️ Invalid ID Format!\n\nYour ID must follow the college pattern:\n- Starts with Year (e.g. 21)\n- Branch Code (e.g. bcs)\n- Roll Number (e.g. 1099)\n\nExample: 21bcs1099");
+                return;
+            }
+            // --------------------------------
+
+            // 2. Load existing DB from Memory
+            let existing = localStorage.getItem('gfg_new_registrations');
+            let db = existing ? JSON.parse(existing) : [];
+
+            // 3. Check Duplicates (Prevents registering same person twice)
+            if (db.some(u => u.id === id)) {
+                alert("⚠️ Error: Student ID " + id + " is already registered!");
+                return;
+            }
+
+            // 4. Save to Memory
+            db.push({ id: id, name: name, role: role });
+            localStorage.setItem('gfg_new_registrations', JSON.stringify(db));
+
+            // 5. UI: Hide Form, Show Ticket
+            document.getElementById('input-section').style.display = 'none';
+            document.getElementById('ticket-placeholder').style.display = 'none';
+            document.getElementById('ticket-final').style.display = 'block';
+
+            // 6. Fill Data into Ticket
+            document.getElementById('out_name').innerText = name;
+            document.getElementById('out_role').innerText = role.toUpperCase();
+            document.getElementById('out_id').innerText = id;
+
+            // 7. Generate QR Code
+            document.getElementById('qrcode').innerHTML = ""; 
+            new QRCode(document.getElementById("qrcode"), {
+                text: JSON.stringify({ id: id }),
+                width: 140,
+                height: 140,
+                colorDark : "#2d3436",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+
+            alert("✅ Valid ID! Student Registered.");
+        });
+    </script>
+
+</body>
+</html>
