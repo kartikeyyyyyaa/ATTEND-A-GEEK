@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATTEND A GEEK - GFG - VITBHOPAL</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+<body>
+
+    <audio id="audio_success" src="beep.mp3"></audio>
+    <audio id="audio_fail" src="error.mp3"></audio>
+
+    <div class="main-wrapper">
+        
+        <header class="app-header">
+            <div class="logo-area">
+                <h1>GFG - CODEVOTEES</h1>
+                <span class="badge">Live Event</span>
+            </div>
+            
+            <button onclick="download_report()" class="btn-export">
+                Download Report (.csv) 📥
+            </button>
+        </header>
+
+        <div class="content-grid">
+            
+            <div class="scanner-section">
+                
+                <div class="scanner-card">
+                    <div id="reader"></div> 
+                    <div class="scan-overlay"></div> <p class="helper-text">Point camera at QR Code</p>
+                </div>
+
+                <div id="status-display" class="message-box">
+                    Waiting for scan.
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-card participant-card">
+                        <h3>Participants</h3>
+                        <h2 id="count-participant">0</h2>
+                    </div>
+                    <div class="stat-card audience-card">
+                        <h3>Audience</h3>
+                        <h2 id="count-audience">0</h2>
+                    </div>
+                </div>
+
+                <div class="logs-container">
+                    <div class="log-box">
+                        <h4>Participant Log</h4>
+                        <ul id="log-participant"></ul>
+                    </div>
+                    <div class="log-box">
+                        <h4>Audience Log</h4>
+                        <ul id="log-audience"></ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <aside class="info-section">
+                
+                <div class="info-card">
+                    <h2>Event Details</h2>
+                    <div class="detail-row">
+                        <strong>📅 Date:</strong> <span>Jan 10th, 2026</span>
+                    </div>
+                    <div class="detail-row">
+                        <strong>📍 Venue:</strong> <span>Audi 1, Academic Block 2, VIT Bhopal</span>
+                    </div>
+                    <div class="detail-row">
+                        <strong>⏰ Time:</strong> <span>10:00 AM - 4:00 PM</span>
+                    </div>
+                </div>
+
+                <div class="info-card rules-card">
+                    <h2>⚠️ Entry Rules</h2>
+                    <ul>
+                        <li>ID Card is mandatory.</li>
+                        <li>Do not scan the same QR twice.</li>
+                        <li>Audience must remain in gallery.</li>
+                    </ul>
+                </div>
+
+                <div class="info-card registration-card">
+                    <h2>⚡ Walk-in Registration</h2>
+                    <p>Student not on the list? Register them instantly.</p>
+                    <a href="register.html" target="_blank" class="register-btn">
+                        Open Registration Form
+                    </a>
+                </div>
+
+            </aside>
+
+        </div>
+
+        <section class="backup-section">
+            <div class="backup-header">
+                <h2>⚠️ Manual Check-In (Backup)</h2>
+                <p>Use this list if QR scanning fails.</p>
+            </div>
+
+            <div class="roster-container">
+                <div class="roster-col">
+                    <h3>Participant Roster</h3>
+                    <div class="table-wrapper">
+                        <table class="roster-table">
+                            <thead><tr><th>ID</th><th>Name</th><th>Action</th></tr></thead>
+                            <tbody id="table-participant"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="roster-col">
+                    <h3>Audience Roster</h3>
+                    <div class="table-wrapper">
+                        <table class="roster-table">
+                            <thead><tr><th>ID</th><th>Name</th><th>Action</th></tr></thead>
+                            <tbody id="table-audience"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
