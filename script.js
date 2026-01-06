@@ -2,12 +2,12 @@
 
 // Static List 
 const static_db = [
-    { id: "STU001", name: "Rahul Sharma", role: "participant" },
-    { id: "STU002", name: "Priya Patel", role: "participant" },
-    { id: "STU003", name: "Amit Singh", role: "audience" },
-    { id: "STU004", name: "Neha Gupta", role: "audience" },
-    { id: "STU005", name: "Ankit Verma", role: "participant" },
-    { id: "STU006", name: "Simran Kaur", role: "audience" }
+    { id: "21bxx89001", name: "Rahul Sharma", role: "participant" },
+    { id: "23bcc23002", name: "Priya Patel", role: "participant" },
+    { id: "24bhu12303", name: "Amit Singh", role: "audience" },
+    { id: "25bhi34504", name: "Neha Gupta", role: "audience" },
+    { id: "22cse56005", name: "Ankit Verma", role: "participant" },
+    { id: "21cse78006", name: "Simran Kaur", role: "audience" }
 ];
 
 
@@ -236,4 +236,5 @@ function download_report() {
 }
 
 let scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+
 scanner.render(on_scan_hit, (err)=>{});
